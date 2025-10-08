@@ -15,18 +15,23 @@ In our experience, the `Client` version is likely the better choice for most rob
 
 Install `ros2` and ensure the following `Boost` libraries are available. 
 ```
-sudo apt-get install libboost-thread-dev libboost-date-time-dev
+sudo apt install libboost-thread-dev libboost-date-time-dev
 ```
 The source code of the `ViconSDK` has been copied from Vicon and provided in this repo, meaning it should be able to build for both `x86` and `aarch64` systems, and possibly others. 
 
-You also need to grab the `diagnostic-updater` package:
+You also need to grab the `diagnostic-updater` package (replace `humble` with `${ROS_DISTRO}`:
 ```
-sudo apt-get install ros-${ROS_DISTRO}-diagnostic-updater
+sudo apt install ros-humble-diagnostic-updater
 ```
 
 From your `colcon_ws` run 
 ```
 colcon build --symlink-install
+```
+Or only compile this package (replace `humble` with `${ROS_DISTRO}`
+```
+source /opt/ros/humble/setup.bash
+colcon build --symlink-install --packages-select vicon_bridge
 ```
 
 ## Usage of the standard client (recommended)
