@@ -14,3 +14,6 @@
 
 # Logs
 log/*
+
+# Build
+build/*
