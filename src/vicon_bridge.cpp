@@ -154,13 +154,13 @@ namespace vicon_bridge
 
     lock.unlock(); // we dont need the lock anymore
 
-    // register the transform publisher
-    spub.pub_transform = this->create_publisher<geometry_msgs::msg::TransformStamped>(
-        tf_namespace_ + "/" + subject_name + "/" + segment_name + "/transform", 10);
-
     // register the twist publisher
     spub.pub_twist = this->create_publisher<geometry_msgs::msg::TwistStamped>(
         tf_namespace_ + "/" + subject_name + "/" + segment_name + "/twist", 10);
+
+    // register the pose publisher
+    spub.pub_pose = this->create_publisher<geometry_msgs::msg::PoseStamped>(
+        tf_namespace_ + "/" + subject_name + "/" + segment_name + "/pose", 10);
 
     spub.is_ready = true;
   }
@@ -272,14 +272,14 @@ namespace vicon_bridge
           SegmentPublisher &spub = pub_it->second;
           if (spub.is_ready)
           {
-            // publish the tranform msg
-            spub.pub_transform->publish(transform);
-            // also publish the twist msg
+            // publish the twist msg
             geometry_msgs::msg::TwistStamped twist;
             if (get_twist_stamped_msg(twist, frame_time, target_subject_name_, target_segment_name_))
             {
               spub.pub_twist->publish(twist);
             }
+            // also publish as a pose msg
+            spub.pub_pose->publish(transform2pose(transform));
           }
         }
         else
@@ -337,14 +337,14 @@ namespace vicon_bridge
               SegmentPublisher &spub = pub_it->second;
               if (spub.is_ready)
               {
-                // publish the tranform msg
-                spub.pub_transform->publish(transform);
-                // also publish the twist msg
+                // publish the twist msg
                 geometry_msgs::msg::TwistStamped twist;
                 if (get_twist_stamped_msg(twist, frame_time, subject_name, segment_name))
                 {
                   spub.pub_twist->publish(twist);
                 }
+                // also publish as a pose msg
+                spub.pub_pose->publish(transform2pose(transform));
               }
             }
             else

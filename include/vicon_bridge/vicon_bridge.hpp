@@ -33,8 +33,8 @@ namespace vicon_bridge
   class SegmentPublisher
   {
   public:
-    rclcpp::Publisher<geometry_msgs::msg::TransformStamped>::SharedPtr pub_transform;
     rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr pub_twist;
+    rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr pub_pose;
     bool is_ready = false;
 
   }; // class Segment Publisher;
